@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -40,38 +41,25 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.weatherapp.Api.InternetResponse
 import com.example.weatherapp.Api.WeatherModel
-import com.example.weatherapp.ui.theme.Grey500
+import com.example.weatherapp.ui.theme.GreenB
+
 import com.example.weatherapp.ui.theme.White300
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherScreen(viewModel: WeatherViewModel, data: WeatherModel) {
+fun WeatherScreen(viewModel: WeatherViewModel, data: WeatherModel? = null) {
 
     var cidade by remember { mutableStateOf("") }
     val weatherLiveData = viewModel.weatherLiveData.observeAsState()
 
-    val backgroundPainter: Painter = when (data.current.condition.text.lowercase()) {
-        "Sunny" -> painterResource(id = R.drawable.sunny_days)
-        "Clear" -> painterResource(id = R.drawable.sunny_days)
-        "Partly cloudy" -> painterResource(id = R.drawable.sunnycloud)
-        "cloudy" -> painterResource(id = R.drawable.cloud_day)
-        "rain" -> painterResource(id = R.drawable.drizzle_days)
-        "snow" -> painterResource(id = R.drawable.snow_days)
-        "thunderstorm" -> painterResource(id = R.drawable.thunderstorm)
 
-        else -> painterResource(id = R.drawable.all_in_one)
-    }
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = GreenB)
+
     ) {
-        Image(
-            painter = backgroundPainter,
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -114,6 +102,14 @@ fun WeatherScreen(viewModel: WeatherViewModel, data: WeatherModel) {
                     }
                 )
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Image(
+                painter = painterResource(
+                    id = R.drawable.pngegg),
+                contentDescription = "Imagem fundo"
+            )
             when (val result = weatherLiveData.value) {
                 is InternetResponse.Error -> {
                     Text(
@@ -148,7 +144,8 @@ fun WeatherDetail(data: WeatherModel) {
             .padding(vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(30.dp))
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         Text(text = "Localização", fontSize = 40.sp ,
             color = White300)
@@ -163,6 +160,7 @@ fun WeatherDetail(data: WeatherModel) {
             fontSize = 56.sp,
             fontWeight = FontWeight.Bold
         )
+        Spacer(modifier = Modifier.height(20.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -180,7 +178,7 @@ fun WeatherDetail(data: WeatherModel) {
 
         }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Card(
             colors = CardDefaults.cardColors(

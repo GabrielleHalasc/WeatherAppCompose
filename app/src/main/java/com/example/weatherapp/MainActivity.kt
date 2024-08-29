@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   WeatherScreen(weatherViewModel, WeatherModel())
+                   WeatherScreen(weatherViewModel)
                 }
             }
         }
